@@ -8,11 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone_number',
+        'is_active',
+        'last_login_at'
     ];
 
     /**
@@ -48,6 +51,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function createdWeddings()
+    {
+        return $this->hasMany(Wedding::class, 'created_by');
+    }
+
+    public function sentMessageLogs()
+    {
+        return $this->hasMany(MessageLog::class, 'sent_by');
+    }
+
+    public function scannedGuestEvents()
+    {
+        return $this->hasMany(GuestEvent::class, 'scanned_by');
     }
 
     /**
