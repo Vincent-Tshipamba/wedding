@@ -9,6 +9,8 @@ class Table extends Model
 {
     use HasFactory;
 
+    public const FREE_STATUS = 'FREE';
+    public const FULL_STATUS = 'FULL';
     protected $fillable = [
         'name',
         'max_guests',
